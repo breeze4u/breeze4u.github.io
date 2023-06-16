@@ -1,22 +1,21 @@
-name: Build and deploy Jekyll site to GitHub Pages
-
+name: Publish to GitHub Pages
 on:
   push:
-    branches:
-      - master
-
+    branches: [main, master]
 jobs:
-  github-pages:
+  jekyll:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
-      - uses: helaili/jekyll-action@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          pre_build_commands: apk --update add python3
+    - uses: actions/checkout@v3
+    # Use the GitHub Actions cache to shorten build times and decrease load on servers
+    - uses: actions/cache@v2
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+    # Standard usage
+    - uses: helaili/jekyll-action@v2
+      with:
+        pre_build_commands: gem update --system
+        token: ${{ secrets.GITHUB_TOKEN }}
