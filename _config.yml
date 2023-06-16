@@ -21,7 +21,7 @@
 title: breeze's blog
 email: breeze_s@qq.com
 description: >- # this means to ignore newlines until "baseurl:"
-  欢迎来到我的博客，我会在这里放一些技术文档，分享给大家
+  this is what i do
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
