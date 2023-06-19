@@ -1,11 +1,3 @@
----
-layout: post
-title: "Post Title"
-subtitle: "This is the post subtitle."
-date: 2023-06-19 18:31:00
-background: '/img/posts/01.jpg'
----
-
 = flume-kafka
 
 == 1.flume配置
