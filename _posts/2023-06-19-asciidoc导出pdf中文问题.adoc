@@ -1,0 +1,5 @@
+[source,shell]
+----
+asciidoctor-pdf -a pdf-theme=basic-theme.yml -a pdf-fontsdir=path/to/fonts document.adoc
+----
+
