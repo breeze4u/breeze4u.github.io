@@ -242,8 +242,4 @@ cardata目录下新建test.txt文件
 bin/kafka-console-consumer.sh --bootstrap-server 10.7.121.58:9092 --topic cardata-topic --from-beginning
 ----
 
-<<<<<<< HEAD
 _--from-beginning_：查看该topic全部的消费信息
-=======
-_--from-beginning_：从topic最早的消息进行消费
->>>>>>> c49c96dd8903902291898d9807c5aa2b542fd2ae
