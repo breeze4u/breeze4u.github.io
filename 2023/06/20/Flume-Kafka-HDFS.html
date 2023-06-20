@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    flume监听文件夹并sink到kafka，kafka消费数据上传至HDFS - breeze&#39;s blog
+    
+  </title>
+
+  <meta name="description" content="1.flume配置">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="/2023/06/20/Flume-Kafka-HDFS.html">
+  <link rel="alternate" type="application/rss+xml" title="breeze&#39;s blog" href="/feed.xml">
+
+</head>
+
+
+<body>
+
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">breeze&#39;s blog</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Page Header -->
+
+  <header class="masthead">
+    
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>flume监听文件夹并sink到kafka，kafka消费数据上传至HDFS</h1>
+            
+            <span class="meta">Posted by
+              <a href="#"></a>
+              on June 20, 2023 &middot; <span class="reading-time" title="Estimated read time">
+  
+   4 mins  read </span>
+
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <div class="sect1">
+<h2 id="1-flume配置">1.flume配置</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="新建flume配置文件">新建flume配置文件</h3>
+<div class="paragraph">
+<p>flume/carjob/目录下新建flume-kafka.conf文件</p>
+</div>
+<div class="paragraph">
+<p>内容如下：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>a1.sources = r1
+a1.channels = c1
+a1.sinks = k1
+
+a1.sources.r1.type = spooldir
+a1.sources.r1.spoolDir = /root/cardata
+a1.sources.r1.fileHeader = true
+a1.sources.r1.fileSuffix = .COMPLETED
+
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 10000
+a1.channels.c1.transactionCapacity = 10000
+
+a1.sinks.k1.type = org.apache.flume.sink.kafka.KafkaSink
+a1.sinks.k1.kafka.bootstrap.servers = 10.7.121.58:9092
+a1.sinks.k1.topic = new-car-topic
+a1.sinks.k1.requiredAcks = 1
+a1.sinks.k1.batchSize = 1
+
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>本配置文件作用：监听/root/cardata目录下的文件，并将数据下沉到kafka</p>
+</div>
+<div class="paragraph">
+<p><em>a1.sources.r1.fileSuffix = .COMPLETED</em>：文件被读取后将增加.COMPLETED后缀，相当于打上一个标签表示这个文件已经被读取过了</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="2-kafka配置">2.kafka配置</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="2-1-新建kafka配置文件">2.1.新建kafka配置文件</h3>
+<div class="paragraph">
+<p>kafka/config目录下新建server.properties-java文件</p>
+</div>
+<div class="paragraph">
+<p>内容如下：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>#表示该主题可删除
+delete.topic.enable=true
+#表示Kafka Broker的唯一标识，每个Broker的ID应该唯一
+broker.id=1
+#声明Kafka监听的地址和端口，用于与客户端或其他Broker通信
+listeners=PLAINTEXT://10.7.121.58:9092
+#网络处理线程数，用于接收和处理客户端的请求
+num.network.threads=3
+#磁盘I/O线程数，用于执行磁盘读写操作
+num.io.threads=8
+#定义套接字发送缓冲区的大小，该值默认为100KB
+socket.send.buffer.bytes=33554432
+#定义套接字接收缓冲区的大小，该值默认为100KB
+socket.receive.buffer.bytes=33554432
+#定义接收请求的最大字节数，该值默认为100MB
+socket.request.max.bytes=104857600
+#声明Kafka Broker的日志目录
+log.dirs=/kafkalogs/kafka-logs
+#设置Kafka topic的初始分区数
+num.partitions=1
+#定义每个数据目录恢复线程数的数量
+num.recovery.threads.per.data.dir=1
+#设置存储消费者offset的topic的副本数量
+offsets.topic.replication.factor=1
+#设置事务状态日志的副本数量
+transaction.state.log.replication.factor=1
+#设置事务状态日志的最小ISR值，即必须有多少个副本在活跃状态下才能继续执行事务
+transaction.state.log.min.isr=1
+#配置Log消息的保留时间，单位为小时
+log.retention.hours=1
+#设置单个日志文件的最大大小，单位字节
+log.segment.bytes=1073741824
+#配置检查保留策略的时间间隔，单位为毫秒
+log.retention.check.interval.ms=300000
+#设置Zookeeper注册中心的连接地址
+zookeeper.connect=localhost:2181
+#设置Zookeeper连接的超时时间，单位为毫秒
+zookeeper.connection.timeout.ms=6000
+#定义消费者组的初始化均衡的延迟时间，单位为毫秒
+group.initial.rebalance.delay.ms=0</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-2-修改zookeeper配置文件">2.2.修改zookeeper配置文件</h3>
+<div class="paragraph">
+<p>zookeeper/conf目录下修改zoo.cfg文件，确保以下内容正确</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=/tmp/zookeeper
+clientPort=2181</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="3-java实现kafka消费数据并上传到hdfs">3.java实现kafka消费数据并上传到HDFS</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="新建kafkatohdfs类">新建KafkaToHDFS类</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package org.example;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Properties;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+
+public class KafkaToHDFS {
+
+    public static void main(String[] args) throws IOException {
+        // 设置 Kafka 连接属性
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "10.7.121.58:9092");//设置kafka集群的地址
+        props.put("group.id", "car-consumer-group");//设置消费者组，组名字自定义，组名字相同的消费者在一个组
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");//重置消费者的offset
+        props.put("enable.auto.commit", "false");//关闭offset自动提交
+//        props.put("auto.commit.interval.ms", "1000");//自动提交时间间隔
+
+        //序列化器
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+
+        // 创建 Kafka 消费者并订阅主题
+        KafkaConsumer&lt;String, String&gt; consumer = new KafkaConsumer&lt;&gt;(props);//实例化一个消费者
+        consumer.subscribe(Collections.singletonList("new-car-topic"));//消费者订阅主题，可以订阅多个主题
+
+        Configuration config = new Configuration();
+        config.set("dfs.client.use.datanode.hostname", "true");
+        config.addResource(new Path("file:///D:/IntelliJProject/Kafka/src/main/resources/core-site.xml"));
+        config.addResource(new Path("file:///D:/IntelliJProject/Kafka/src/main/resources/hdfs-site.xml"));
+        FileSystem fs = FileSystem.get(URI.create("hdfs://10.7.121.58:9000"), config);
+        String filePath = "/cardata/cardatatest.txt";//hdfs的存储路径
+        Path path = new Path(filePath);
+
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fs.create(path)))) {
+            int count = 1;//计数器，查看写入多少条数据
+            while (true) {
+                System.out.println("-------------------------等待数据-------------------------");
+                ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(100));
+                for (ConsumerRecord&lt;String, String&gt; record : records) {
+                    String message = record.value();
+                    System.out.println("-------------------------第" + count + "条数据-------------------------");
+                    count++;
+                    System.out.printf("Received message: offset = %d, key = %s, value = %s\n",
+                            record.offset(), record.key(), record.value());
+                    bw.write(record.value() + "\n");  //写入数据，添加换行符，保证每条记录占一行
+                    System.out.println("-------------------------写入数据-------------------------");
+                    // 判断最后一条消息是否包含指定字符串
+                    if (message.contains("EOF")) {
+                        // 刷新缓冲区并关闭文件流
+                        bw.flush();
+                        bw.close();
+
+                        // 关闭 Kafka 消费者
+                        consumer.close();
+                        return;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>重要参数：</strong></p>
+</div>
+<div class="paragraph">
+<p><em>props.put("bootstrap.servers", "10.7.121.58:9092");</em>：修改自己的host</p>
+</div>
+<div class="paragraph">
+<p><em>props.put("group.id", "car-consumer-group");</em>：自定义组名</p>
+</div>
+<div class="paragraph">
+<p><em>props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");</em>："latest"表示从最新的数据开始读取，"earliest"表示从最早的数据开始读取</p>
+</div>
+<div class="paragraph">
+<p><em>consumer.subscribe(Collections.singletonList("new-car-topic"));</em>：要订阅的主题名称</p>
+</div>
+<div class="paragraph">
+<p><em>config.addResource(new Path("file:///D:/IntelliJProject/Kafka/src/main/resources/core-site.xml"));</em>：将kafka里的core-site.xml配置文件放入resources中</p>
+</div>
+<div class="paragraph">
+<p><em>config.addResource(new Path("file:///D:/IntelliJProject/Kafka/src/main/resources/hdfs-site.xml"));</em>：将kafka里的hdfs-site.xml配置文件放入resources中</p>
+</div>
+<div class="paragraph">
+<p><em>FileSystem fs = FileSystem.get(URI.create("hdfs://10.7.121.58:9000"), config);</em>：HDFS的host</p>
+</div>
+<div class="paragraph">
+<p><em>String filePath = "/cardata/cardatatest.txt";</em>：要写入的HDFS路径</p>
+</div>
+<div class="paragraph">
+<p><em>message.contains("EOF")</em>：停止拉取数据的终止字符，需要在数据的末尾新增一行"EOF"</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="4-启动flume-kafka-hdfs">4.启动Flume-Kafka-HDFS</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="4-1-启动zookeeper">4.1.启动zookeeper</h3>
+<div class="paragraph">
+<p>zookeeper根目录下运行命令</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">bin/zkServer.sh start</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="4-2-启动kafka">4.2.启动kafka</h3>
+<div class="sect3">
+<h4 id="4-2-1-启动kafka">4.2.1.启动kafka</h4>
+<div class="paragraph">
+<p>kafka根目录下运行命令</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">bin/kafka-server-start.sh config/server.properties-java</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="4-2-2-创建主题">4.2.2.创建主题</h4>
+<div class="paragraph">
+<p>创建名为new-car-topic的主题</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">bin/kafka-topics.sh --create --topic new-car-topic --partitions 1 --replication-factor 1 --zookeeper localhost:2181</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>查看现有主题列表</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">bin/kafka-topics.sh --list --zookeeper localhost:2181</code></pre>
+</div>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="https://github.com/breeze4u/breeze4u.github.io/blob/master/img/f-k-h-img/topic-list.png?raw=true" alt="现有主题列表">
+</div>
+<div class="title">Figure 1. 现有主题列表</div>
+</div>
+<div class="paragraph">
+<p>显示有主题名称则表示创建成功</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="4-3-启动flume">4.3.启动Flume</h3>
+<div class="paragraph">
+<p>flume根目录下运行命令</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">bin/flume-ng agent --conf conf/ --conf-file carjob/flume-kafka.conf --name a1 -Dflume.root.logger=INFO,console</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>--conf-file</em>：配置文件相对路径</p>
+</div>
+<div class="paragraph">
+<p><em>--name</em>：agent名称</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="4-4-启动kafkatohdfs">4.4.启动KafkaToHDFS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>运行KafkaToHDFS.main()</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="https://github.com/breeze4u/breeze4u.github.io/blob/master/img/f-k-h-img/kafkatohdfs-wait.png?raw=true" alt="运行KafkaToHDFS.main()">
+</div>
+<div class="title">Figure 2. 运行KafkaToHDFS.main()</div>
+</div>
+<div class="paragraph">
+<p>启动成功将会一直显示等待中，因为此时kafka还未接收到flume下沉的数据</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="4-5-向监听的目录传入txt文件">4.5.向监听的目录传入txt文件</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>文件末尾行包含"EOF"字符</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="https://github.com/breeze4u/breeze4u.github.io/blob/master/img/f-k-h-img/txt.png?raw=true" alt="传入txt文件">
+</div>
+<div class="title">Figure 3. 传入txt文件</div>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="https://github.com/breeze4u/breeze4u.github.io/blob/master/img/f-k-h-img/kafka-success.png?raw=true" alt="运行KafkaToHDFS.main()">
+</div>
+<div class="title">Figure 4. kafka写入成功</div>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="https://github.com/breeze4u/breeze4u.github.io/blob/master/img/f-k-h-img/hdfs.png?raw=true" alt="HDFS">
+</div>
+<div class="title">Figure 5. HDFS写入成功</div>
+</div>
+</div>
+</div>
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          <li class="list-inline-item">
+            <a href="mailto:breeze_s@qq.com">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://twitter.com/jekyllrb">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/breeze4u">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy;  2023</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/scripts.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+
+</body>
+
+</html>
