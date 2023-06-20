@@ -1,0 +1,278 @@
+= flume监听文件夹并sink到kafka，kafka消费数据上传至HDFS
+
+== 1.flume配置
+
+=== 新建flume配置文件
+
+flume/carjob/目录下新建flume-kafka.conf文件
+
+内容如下：
+
+----
+a1.sources = r1
+a1.channels = c1
+a1.sinks = k1
+
+a1.sources.r1.type = spooldir
+a1.sources.r1.spoolDir = /root/cardata
+a1.sources.r1.fileHeader = true
+a1.sources.r1.fileSuffix = .COMPLETED
+
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 10000
+a1.channels.c1.transactionCapacity = 10000
+
+a1.sinks.k1.type = org.apache.flume.sink.kafka.KafkaSink
+a1.sinks.k1.kafka.bootstrap.servers = 10.7.121.58:9092
+a1.sinks.k1.topic = new-car-topic
+a1.sinks.k1.requiredAcks = 1
+a1.sinks.k1.batchSize = 1
+
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1
+----
+
+本配置文件作用：监听/root/cardata目录下的文件，并将数据下沉到kafka
+
+_a1.sources.r1.fileSuffix = .COMPLETED_：文件被读取后将增加.COMPLETED后缀，相当于打上一个标签表示这个文件已经被读取过了
+
+
+== 2.kafka配置
+
+=== 2.1.新建kafka配置文件
+
+kafka/config目录下新建server.properties-java文件
+
+内容如下：
+
+----
+#表示该主题可删除
+delete.topic.enable=true
+#表示Kafka Broker的唯一标识，每个Broker的ID应该唯一
+broker.id=1
+#声明Kafka监听的地址和端口，用于与客户端或其他Broker通信
+listeners=PLAINTEXT://10.7.121.58:9092
+#网络处理线程数，用于接收和处理客户端的请求
+num.network.threads=3
+#磁盘I/O线程数，用于执行磁盘读写操作
+num.io.threads=8
+#定义套接字发送缓冲区的大小，该值默认为100KB
+socket.send.buffer.bytes=33554432
+#定义套接字接收缓冲区的大小，该值默认为100KB
+socket.receive.buffer.bytes=33554432
+#定义接收请求的最大字节数，该值默认为100MB
+socket.request.max.bytes=104857600
+#声明Kafka Broker的日志目录
+log.dirs=/kafkalogs/kafka-logs
+#设置Kafka topic的初始分区数
+num.partitions=1
+#定义每个数据目录恢复线程数的数量
+num.recovery.threads.per.data.dir=1
+#设置存储消费者offset的topic的副本数量
+offsets.topic.replication.factor=1
+#设置事务状态日志的副本数量
+transaction.state.log.replication.factor=1
+#设置事务状态日志的最小ISR值，即必须有多少个副本在活跃状态下才能继续执行事务
+transaction.state.log.min.isr=1
+#配置Log消息的保留时间，单位为小时
+log.retention.hours=1
+#设置单个日志文件的最大大小，单位字节
+log.segment.bytes=1073741824
+#配置检查保留策略的时间间隔，单位为毫秒
+log.retention.check.interval.ms=300000
+#设置Zookeeper注册中心的连接地址
+zookeeper.connect=localhost:2181
+#设置Zookeeper连接的超时时间，单位为毫秒
+zookeeper.connection.timeout.ms=6000
+#定义消费者组的初始化均衡的延迟时间，单位为毫秒
+group.initial.rebalance.delay.ms=0
+----
+
+=== 2.2.修改zookeeper配置文件
+
+zookeeper/conf目录下修改zoo.cfg文件，确保以下内容正确
+
+----
+tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=/tmp/zookeeper
+clientPort=2181
+----
+
+
+== 3.java实现kafka消费数据并上传到HDFS
+
+=== 新建KafkaToHDFS类
+
+[source,java]
+----
+package org.example;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Properties;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+
+public class KafkaToHDFS {
+
+    public static void main(String[] args) throws IOException {
+        // 设置 Kafka 连接属性
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "10.7.121.58:9092");//设置kafka集群的地址
+        props.put("group.id", "car-consumer-group");//设置消费者组，组名字自定义，组名字相同的消费者在一个组
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");//重置消费者的offset
+        props.put("enable.auto.commit", "false");//关闭offset自动提交
+//        props.put("auto.commit.interval.ms", "1000");//自动提交时间间隔
+
+        //序列化器
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+
+        // 创建 Kafka 消费者并订阅主题
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);//实例化一个消费者
+        consumer.subscribe(Collections.singletonList("new-car-topic"));//消费者订阅主题，可以订阅多个主题
+
+        Configuration config = new Configuration();
+        config.set("dfs.client.use.datanode.hostname", "true");
+        config.addResource(new Path("file:///D:/IntelliJProject/Kafka/src/main/resources/core-site.xml"));
+        config.addResource(new Path("file:///D:/IntelliJProject/Kafka/src/main/resources/hdfs-site.xml"));
+        FileSystem fs = FileSystem.get(URI.create("hdfs://10.7.121.58:9000"), config);
+        String filePath = "/cardata/cardatatest.txt";//hdfs的存储路径
+        Path path = new Path(filePath);
+
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fs.create(path)))) {
+            int count = 1;//计数器，查看写入多少条数据
+            while (true) {
+                System.out.println("-------------------------等待数据-------------------------");
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+                for (ConsumerRecord<String, String> record : records) {
+                    String message = record.value();
+                    System.out.println("-------------------------第" + count + "条数据-------------------------");
+                    count++;
+                    System.out.printf("Received message: offset = %d, key = %s, value = %s\n",
+                            record.offset(), record.key(), record.value());
+                    bw.write(record.value() + "\n");  //写入数据，添加换行符，保证每条记录占一行
+                    System.out.println("-------------------------写入数据-------------------------");
+                    // 判断最后一条消息是否包含指定字符串
+                    if (message.contains("EOF")) {
+                        // 刷新缓冲区并关闭文件流
+                        bw.flush();
+                        bw.close();
+
+                        // 关闭 Kafka 消费者
+                        consumer.close();
+                        return;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+----
+
+*重要参数：*
+
+_props.put("bootstrap.servers", "10.7.121.58:9092");_：修改自己的host
+
+_props.put("group.id", "car-consumer-group");_：自定义组名
+
+_props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");_："latest"表示从最新的数据开始读取，"earliest"表示从最早的数据开始读取
+
+_consumer.subscribe(Collections.singletonList("new-car-topic"));_：要订阅的主题名称
+
+_config.addResource(new Path("file:///D:/IntelliJProject/Kafka/src/main/resources/core-site.xml"));_：将kafka里的core-site.xml配置文件放入resources中
+
+_config.addResource(new Path("file:///D:/IntelliJProject/Kafka/src/main/resources/hdfs-site.xml"));_：将kafka里的hdfs-site.xml配置文件放入resources中
+
+_FileSystem fs = FileSystem.get(URI.create("hdfs://10.7.121.58:9000"), config);_：HDFS的host
+
+_String filePath = "/cardata/cardatatest.txt";_：要写入的HDFS路径
+
+_message.contains("EOF")_：停止拉取数据的终止字符，需要在数据的末尾新增一行"EOF"
+
+== 4.启动Flume-Kafka-HDFS
+
+=== 4.1.启动zookeeper
+
+zookeeper根目录下运行命令
+
+[source,shell]
+----
+bin/zkServer.sh start
+----
+
+=== 4.2.启动kafka
+
+==== 4.2.1.启动kafka
+
+kafka根目录下运行命令
+
+[source,shell]
+----
+bin/kafka-server-start.sh config/server.properties-java
+----
+
+==== 4.2.2.创建主题
+
+创建名为new-car-topic的主题
+
+[source,shell]
+----
+bin/kafka-topics.sh --create --topic new-car-topic --partitions 1 --replication-factor 1 --zookeeper localhost:2181
+----
+
+查看现有主题列表
+
+[source,shell]
+----
+bin/kafka-topics.sh --list --zookeeper localhost:2181
+----
+
+image::img/f-k-h-img/topic-list.png[现有主题列表,title="现有主题列表",align="center"]
+
+显示有主题名称则表示创建成功
+
+=== 4.3.启动Flume
+
+flume根目录下运行命令
+
+[source,shell]
+----
+bin/flume-ng agent --conf conf/ --conf-file carjob/flume-kafka.conf --name a1 -Dflume.root.logger=INFO,console
+----
+
+_--conf-file_：配置文件相对路径
+
+_--name_：agent名称
+
+== 4.4.启动KafkaToHDFS
+
+运行KafkaToHDFS.main()
+
+image::img/f-k-h-img/kafkatohdfs-wait.png[alt="运行KafkaToHDFS.main()",align="center",title="运行KafkaToHDFS.main()"]
+
+启动成功将会一直显示等待中，因为此时kafka还未接收到flume下沉的数据
+
+== 4.5.向监听的目录传入txt文件
+
+文件末尾行包含"EOF"字符
+
+image::img/f-k-h-img/txt.png[alt="传入txt文件",align="center",title="传入txt文件"]
+
+image::img/f-k-h-img/kafka-success.png[alt="运行KafkaToHDFS.main()",align="center",title="kafka写入成功"]
+
+image::img/f-k-h-img/hdfs.png[alt="HDFS",align="center",title="HDFS写入成功"]
