@@ -242,7 +242,7 @@ bin/kafka-topics.sh --create --topic new-car-topic --partitions 1 --replication-
 bin/kafka-topics.sh --list --zookeeper localhost:2181
 ----
 
-image::img/f-k-h-img/topic-list.png[现有主题列表,title="现有主题列表",align="center"]
+image::https://github.com/breeze4u/breeze4u.github.io/blob/master/img/f-k-h-img/topic-list.png?raw=true[现有主题列表,title="现有主题列表",align="center"]
 
 显示有主题名称则表示创建成功
 
@@ -263,7 +263,7 @@ _--name_：agent名称
 
 运行KafkaToHDFS.main()
 
-image::img/f-k-h-img/kafkatohdfs-wait.png[alt="运行KafkaToHDFS.main()",align="center",title="运行KafkaToHDFS.main()"]
+image::https://github.com/breeze4u/breeze4u.github.io/blob/master/img/f-k-h-img/kafkatohdfs-wait.png?raw=true[alt="运行KafkaToHDFS.main()",align="center",title="运行KafkaToHDFS.main()"]
 
 启动成功将会一直显示等待中，因为此时kafka还未接收到flume下沉的数据
 
@@ -271,8 +271,8 @@ image::img/f-k-h-img/kafkatohdfs-wait.png[alt="运行KafkaToHDFS.main()",align="
 
 文件末尾行包含"EOF"字符
 
-image::img/f-k-h-img/txt.png[alt="传入txt文件",align="center",title="传入txt文件"]
+image::https://github.com/breeze4u/breeze4u.github.io/blob/master/img/f-k-h-img/txt.png?raw=true[alt="传入txt文件",align="center",title="传入txt文件"]
 
-image::img/f-k-h-img/kafka-success.png[alt="运行KafkaToHDFS.main()",align="center",title="kafka写入成功"]
+image::https://github.com/breeze4u/breeze4u.github.io/blob/master/img/f-k-h-img/kafka-success.png?raw=true[alt="运行KafkaToHDFS.main()",align="center",title="kafka写入成功"]
 
-image::img/f-k-h-img/hdfs.png[alt="HDFS",align="center",title="HDFS写入成功"]
+image::https://github.com/breeze4u/breeze4u.github.io/blob/master/img/f-k-h-img/hdfs.png?raw=true[alt="HDFS",align="center",title="HDFS写入成功"]
