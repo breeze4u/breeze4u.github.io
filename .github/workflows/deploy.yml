@@ -1,64 +1,22 @@
-name: Pages
-
-# 触发器、分支
-on:
-  push:
-    branches:
-      - gh-pages  # default branch
+name: Build and Deploy
+on: [push]
 jobs:
-  # 子任务
-  pages:
-    runs-on: ubuntu-latest # 定运行所需要的虚拟机环境
-    permissions:
-      contents: write
+  build-and-deploy:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
         with:
-          submodules: true
-          fetch-depth: 1
-      # 每个name表示一个步骤:step
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18.17.1' # 自己正在使用的node版本即可
-      - name: Global Config
+          persist-credentials: false
+      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        run: |
+          npm install
+          npm run build
         env:
-          ACTIONS_DEPLOY_KEY: ${{secrets.ACTIONS_DEPLOY_KEY}}
-        run: |
-          sudo timedatectl set-timezone "Asia/Shanghai"
-          mkdir -p ~/.ssh/
-          echo "$ACTIONS_DEPLOY_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          git config --global user.email "xx"
-          git config --global user.name "XXX"
-      # - run: node -v # 查看node版本号
-      # 缓存依赖项: https://docs.github.com/cn/actions/using-workflows/caching-dependencies-to-speed-up-workflows
-      - name: Cache NPM dependencies
-        uses: actions/cache@v2
+          CI: false
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          # path: node_modules
-          key: ${{ runner.OS }}-npm-cache
-          restore-keys: |
-            ${{ runner.OS }}-npm-cache
-      # 查看路径 : /home/runner/work/blog/blog
-      # - name: Look Path
-      #   run: pwd
-      # 查看文件
-      - name: Look Dir List
-        run: tree -L 3 -a
-      # 第一次或者依赖发生变化的时候执行 Install Dependencies，其它构建的时候不需要这一步
-      - name: Install Dependencies
-        run: npm install
-      - name: Look Dir List
-        run: tree -L 3 -a
-      - name: Clean
-        run: npm run clean
-      - name: Build
-        run: npm run build
-      - name: Deploy
-        run: npm run deploy
-      - name: Get the output
-        run: |
-          echo "${{ steps.deploy.outputs.notify }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: master # The branch the action should deploy to.
+          FOLDER: pub
