@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: breeze's Blog
+title: Breeze's Blog
 subtitle: ''
 description: ''
 keywords:
@@ -102,5 +102,5 @@ theme: clean-blog
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com:breeze4u/breeze4u.github.io.git
+  repo: https://github.com/breeze4u/breeze4u.github.io.git
   branch: main
