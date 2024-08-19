@@ -43,7 +43,8 @@ git config --global user.email "你的邮箱"
 使用 [VS Code](https://code.visualstudio.com/Download) 便于利用内置的 Git 插件实现编辑后即可上传至 GitHub 仓库的快速流程，也可使用具备相同功能的文本编辑器或 IDE 。
 ## 三、Github Pages 配置
 
-### 1. 创建仓库
+进入创建仓库页面
+
 `Repository name` 必须为`<username>.github.io`
 
 ![](https://breeze-img.oss-cn-chengdu.aliyuncs.com/img/3346627dab800bfddeca088b6cf4fbc8-1723815699.png)
@@ -52,7 +53,7 @@ git config --global user.email "你的邮箱"
 在仓库中前往 **Settings** > **Pages** > **Source** 。 将 source 更改为 **GitHub Actions**，然后保存。
 
 创建完成后记录仓库地址。
-## Hexo配置
+## 四、Hexo配置
 
 ### 1. 安装 Hexo
 在 `CMD` 中通过以下命令安装 Hexo：
@@ -161,8 +162,76 @@ git clone https://github.com/klugjo/hexo-theme-clean-blog.git themes/clean-blog
 theme: clean-blog
 ```
 
-关于主题的更多页面配置可以在 [Clean Blog](https://github.com/klugjo/hexo-theme-clean-blog) 中看到。
+关于主题的更多页面配置如标签与目录可以在 [Clean Blog](https://github.com/klugjo/hexo-theme-clean-blog) 中看到。
 
 然后将更改后的内容通过 Git 或 VS Code 内置 Git 上传至仓库。
 
 ### 5. 发布文章
+使用 VS Code 打开 Blog 目录，在 `source/_posts` 下新建或将编辑好的 md 文件粘贴至此。
+在页面中显示自定义信息，需要如下的文件头：
+
+```md
+---
+title: mytitle
+tags: 
+  - tag1
+date: 2024-08-16 21:26:53
+categories: 
+  - cate1
+---
+```
+
+编辑完成后保存上传至 Git 即可自动生成页面。
+
+## 五、个人域名配置
+
+**以阿里云域名为例，域名购买和激活请自行查阅**
+
+阿里云 > 云解析DNS > 解析设置 > 添加记录
+
+- 记录类型：A-表示指向一个 ip 地址；CNAME-表示指向另一个域名，这里选择 CNAME
+- 主机记录：@-表示无前缀，如 baidu.com；www-表示 www.baidu.com
+- 记录值：指向的 GitHub Pages 域名。
+
+![](https://breeze-img.oss-cn-chengdu.aliyuncs.com/img/bc7cdb6ed999c6455cae29fbf4294ea5-1724040562.png)
+
+配置完毕后，打开 Blog 目录下的 source 目录，新建一个名为 `CNAME` 的文件，内容为你的个人域名，如下：
+
+![](https://breeze-img.oss-cn-chengdu.aliyuncs.com/img/6e76790e1602bd0e16ffe6de991f9f39-1724041369.png)
+
+等待片刻即可从个人域名访问到 GitHub Pages。
+
+## 六、CDN配置
+
+### 1. 注册cloudflare账号
+
+进入 https://dash.cloudflare.com/sign-up 进行账号注册或登录。
+
+登录后出现输入域名的页面，选择免费计划。
+
+### 2. 域名解析
+打开 CMD，通过 ping GitHub Pages 域名获取 ip 地址：
+
+```bash
+ping breeze4u.github.io
+```
+
+参考前面阿里云的 DNS 配置添加解析。
+
+![](https://breeze-img.oss-cn-chengdu.aliyuncs.com/img/c7e31bfefecc61f5b1646e35081cd2d3-1724042065.png)
+
+### 3. 更改 DNS 服务器
+
+进入阿里云的域名管理页面，对 DNS 服务器进行修改。
+
+![](https://breeze-img.oss-cn-chengdu.aliyuncs.com/img/ce123a5761561a43c4cccbb9e1e40cc6-1724042436.png)
+
+后续根据指示开启免费 ssl 证书，调整策略为 FULL。
+
+![](https://breeze-img.oss-cn-chengdu.aliyuncs.com/img/034fb977be8060dc688ad6bc359017c7-1724042588.png)
+
+回到 GitHub Pages 的仓库，进入 Settings > Pages，勾选 Enforce HTTPS。
+
+![](https://breeze-img.oss-cn-chengdu.aliyuncs.com/img/1145833cea460f664564f09abf081fdf-1724042993.png)
+
+等待片刻，即可使用 https 快速的访问你的博客网站。
