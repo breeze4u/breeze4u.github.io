@@ -1,5 +1,5 @@
 ---
-title: 使用Hexo-GitHub Pages-域名-CDN搭建个人博客
+title: 使用 Hexo-GitHub Pages-域名-CDN 搭建个人博客
 tags: 
   - Hexo
 date: 2024-08-16 21:26:53

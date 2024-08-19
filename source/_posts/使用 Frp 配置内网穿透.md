@@ -1,5 +1,5 @@
 ---
-title: Frp-内网穿透配置
+title: 使用 Frp 配置内网穿透
 tags: 
   - Frp
   - 内网穿透
@@ -7,18 +7,21 @@ date: 2023-12-27 15:03:24
 categories: 
   - 教程
 ---
+
 ## 版本信息
-| 软件 | 版本 |
-| ---- | ---- |
-| Frp | frp_0.53.2_linux_amd64 |
-| 服务端Linux | CentOS 8.2 |
-| 客户端Linux | CentOS 6.8 |
-## 下载frp源码包
-[下载地址](https://github.com/fatedier/frp/releases)
-[参考配置教程](https://blog.csdn.net/weixin_43804047/article/details/135174832)
-## 上传源码包到云服务器和实验室服务器
-## 服务器端配置
-### 编辑`frps.toml`
+| 软件       | 版本                     |
+| -------- | ---------------------- |
+| Frp      | frp_0.53.2_linux_amd64 |
+| 服务端Linux | CentOS 8.2             |
+| 客户端Linux | CentOS 6.8             |
+## 一、安装 Frp
+
+- [下载地址](https://github.com/fatedier/frp/releases)
+- [参考配置教程](https://blog.csdn.net/weixin_43804047/article/details/135174832)
+
+下载完毕后上传源码包到云服务器和实验室服务器
+## 二、服务器端配置
+### 1. 编辑`frps.toml`
 
  ```
  [common]
@@ -47,11 +50,12 @@ log_file = /home/$USER/frp/frps.log
 log_level = info
 log_max_days = 3
 ```
-### 运行服务
+### 2. 运行服务
 ```
 ./frps -c frps.toml
 ```
-###  服务端自启动配置
+###  3. 服务端自启动配置
+
 将 `frps, frps.toml` 文件放到系统目录下
 
 ```
@@ -91,8 +95,9 @@ systemctl start frps  # 启动客户端服务
 ```
 
 最后将云服务器中所有提及的端口打开
-## 客户端配置
-###  编辑 `frpc.toml`
+## 三、客户端配置
+###  1. 编辑 `frpc.toml`
+
 ```
 [common]
 # 服务端公网ip、监听端口bind_port
@@ -115,18 +120,23 @@ remote_port = 2288
 # local_port 为目标端口
 # remote_port 为远程端口，记得服务端的防火墙打开这个端口
 ```
+
 需要其他端口映射则添加类似配置，如
+
 ```
 [hadoop]
 type = tcp
 local_port = 50070
 remote_port = 50070
 ```
-### 客户端自启动配置
+### 2. 客户端自启动配置
+
 [centos6自启动配置](https://blog.csdn.net/freshboya/article/details/86663907)
-## dashboard web
+## 四、dashboard web
+
 `服务器端IP:7500`
-## 连接实验室服务器
+## 五、连接实验室服务器
+
 ```
 ssh username@服务器端ip -p 2288
 ```
