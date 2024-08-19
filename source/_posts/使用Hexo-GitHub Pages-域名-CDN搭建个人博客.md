@@ -1,11 +1,10 @@
 ---
-创建时间: 2024-08-16, 21:26:53, 星期五
-修改时间: 2024-08-17, 16:57:33, 星期六
-tags:
-  - 教程
+title: 使用Hexo-GitHub Pages-域名-CDN搭建个人博客
+tags: 教程
 ---
+
 ## 一、简介
----
+
 ### 1. Hexo是什么？
 [Hexo](https://hexo.io/zh-cn/) 是一个快速、简洁且高效的静态博客框架，它基于 Node.js 运行，可以将我们撰写的 Markdown 文档解析渲染成静态的 HTML 网页。
 ### 2. Github Pages 是什么？
@@ -18,7 +17,7 @@ tags:
 - CDN 可提供内置的安全功能，如 DDoS 防护、SSL/TLS 加密等，保护网站免受恶意攻击。
 结合自定义域名和 CDN 加速可以显著提高部署在 GitHub Pages 的博客访问速度。
 ## 二、环境准备
----
+
 **注意：配置过程中多处需要全局代理，请自行解决网络问题。**
 ### 1. 安装 Node.js 和 npm
 -  Hexo 是基于 Node.js 的，所以需要先安装 Node.js 和 npm。
@@ -39,7 +38,7 @@ git config --global user.email "你的邮箱"
 ### 3. 安装 Visual Studio Code
 使用 [VS Code](https://code.visualstudio.com/Download) 便于利用内置的 Git 插件实现编辑后即可上传至 GitHub 仓库的快速流程，也可使用具备相同功能的文本编辑器或 IDE 。
 ## 三、Github Pages 配置
----
+
 ### 1. 创建仓库
 `Repository name` 必须为`<username>.github.io`
 
@@ -50,7 +49,7 @@ git config --global user.email "你的邮箱"
 
 创建完成后记录仓库地址。
 ## Hexo配置
----
+
 ### 1. 安装 Hexo
 在 `CMD` 中通过以下命令安装 Hexo：
 ```bash
