@@ -11,10 +11,10 @@ categories:
 ## 版本信息
 
 | 软件       | 版本                     |
-| -------- | ---------------------- |
+| :-------- | :---------------------- |
 | Frp      | frp_0.53.2_linux_amd64 |
-| 服务端Linux | CentOS 8.2             |
-| 客户端Linux | CentOS 6.8             |
+| 服务端Linux | CentOS 8.2 |
+| 客户端Linux | CentOS 6.8 |
 
 ## 一、安装 Frp
 
