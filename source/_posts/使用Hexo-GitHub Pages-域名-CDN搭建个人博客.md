@@ -1,10 +1,10 @@
 ---
 title: 使用Hexo-GitHub Pages-域名-CDN搭建个人博客
 tags: 
-  - 教程
+  - Hexo
 date: 2024-08-16 21:26:53
 categories: 
-  - blog
+  - 教程
 ---
 
 ## 一、简介
