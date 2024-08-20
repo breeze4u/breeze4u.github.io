@@ -15,7 +15,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '22'
+        node-version: '20'
 
     - name: Install dependencies
       run: npm install
@@ -31,4 +31,4 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan breezev.cn >> ~/.ssh/known_hosts
-        rsync -avz --delete ./public/ root@breezev.cn:/root/Projects/hexo-blog/breeze4u.github.io/public
+        rsync -avz --delete ./public/ hexouser@breezev.cn:/home/hexouser/blog/breeze4u.github.io/public
