@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="版本信息
+
+
+软件
+版本
+
+
+
+Frp
+frp_0.53.2_linux_amd64
+
+
+服务端Linux
+CentOS 8.2
+
+
+客户端Linux
+CentOS 6.8
+
+
+一、安装 Frp
+下载地址
+参考配置教程
+
+下载完毕后上传源码包到云服务器和实验室服务器
+二、服务器端配置1. 编辑frp"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="breeze"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="使用 Frp 配置内网穿透"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="版本信息
+
+
+软件
+版本
+
+
+
+Frp
+frp_0.53.2_linux_amd64
+
+
+服务端Linux
+CentOS 8.2
+
+
+客户端Linux
+CentOS 6.8
+
+
+一、安装 Frp
+下载地址
+参考配置教程
+
+下载完毕后上传源码包到云服务器和实验室服务器
+二、服务器端配置1. 编辑frp"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Breeze&#39;s Blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="http://example.comimg/home.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="http://example.comimg/home.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>使用 Frp 配置内网穿透 - Breeze&#39;s Blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Breeze's Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/tags">
+                            
+                                Tags
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories">
+                            
+                                Categories
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/breeze4u">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>使用 Frp 配置内网穿透</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2023-12-27
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/Frp/">#Frp</a> <a href="/tags/内网穿透/">#内网穿透</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/教程/">教程</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h2><table>
+<thead>
+<tr>
+<th align="left">软件</th>
+<th align="left">版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Frp</td>
+<td align="left">frp_0.53.2_linux_amd64</td>
+</tr>
+<tr>
+<td align="left">服务端Linux</td>
+<td align="left">CentOS 8.2</td>
+</tr>
+<tr>
+<td align="left">客户端Linux</td>
+<td align="left">CentOS 6.8</td>
+</tr>
+</tbody></table>
+<h2 id="一、安装-Frp"><a href="#一、安装-Frp" class="headerlink" title="一、安装 Frp"></a>一、安装 Frp</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/releases">下载地址</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43804047/article/details/135174832">参考配置教程</a></li>
+</ul>
+<p>下载完毕后上传源码包到云服务器和实验室服务器</p>
+<h2 id="二、服务器端配置"><a href="#二、服务器端配置" class="headerlink" title="二、服务器端配置"></a>二、服务器端配置</h2><h3 id="1-编辑frps-toml"><a href="#1-编辑frps-toml" class="headerlink" title="1. 编辑frps.toml"></a>1. 编辑<code>frps.toml</code></h3> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> [common]</span><br><span class="line"># frp监听的端口，默认是7000，可修改</span><br><span class="line">bind_port = 7000</span><br><span class="line"></span><br><span class="line"># frp面板端口、用户名和密码，请改成更复杂的。</span><br><span class="line">dashboard_port = 7500</span><br><span class="line">dashboard_user = admin</span><br><span class="line">dashboard_pwd = admin123456</span><br><span class="line"></span><br><span class="line"># 授权码，请改成更复杂的，这个token之后在客户端会用到</span><br><span class="line">token = e10adc3949ba59abbe56e057f20f883e</span><br><span class="line"></span><br><span class="line"># 设置HTTP及https协议下代理端口(非重要)</span><br><span class="line"># vhost_http_port = 7080</span><br><span class="line"># vhost_https_port = 7081</span><br><span class="line"></span><br><span class="line"># 去除TCP速度限制</span><br><span class="line">tcp_mux = false</span><br><span class="line"></span><br><span class="line"># enable_prometheus = true</span><br><span class="line"></span><br><span class="line"># frp日志配置</span><br><span class="line">log_file = /home/$USER/frp/frps.log</span><br><span class="line">log_level = info</span><br><span class="line">log_max_days = 3</span><br></pre></td></tr></table></figure>
+<h3 id="2-运行服务"><a href="#2-运行服务" class="headerlink" title="2. 运行服务"></a>2. 运行服务</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frps -c frps.toml</span><br></pre></td></tr></table></figure>
+<h3 id="3-服务端自启动配置"><a href="#3-服务端自启动配置" class="headerlink" title="3. 服务端自启动配置"></a>3. 服务端自启动配置</h3><p>将 <code>frps, frps.toml</code> 文件放到系统目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mv frps /usr/bin/ # frps 可执行文件</span><br><span class="line">mkdir /etc/frp</span><br><span class="line">mv frps.toml /etc/frp/ # 配置文件</span><br></pre></td></tr></table></figure>
+
+<p>新建文件<code>frps.service</code> 内容如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=frps service</span><br><span class="line">After=network.target syslog.target</span><br><span class="line">Wants=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=/usr/bin/frps -c /etc/frp/frps.toml</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>将文件复制到自启动服务项</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp frps.service /usr/lib/systemd/system/</span><br></pre></td></tr></table></figure>
+
+<p>设置自启动，启动服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable frps  # 允许自启动</span><br><span class="line"># 执行成功会提示“Created symlink /etc/systemd/system/multi-user.target.wants/frps.service → /usr/lib/systemd/system/frps.service.”</span><br><span class="line">systemctl start frps  # 启动客户端服务</span><br></pre></td></tr></table></figure>
+
+<p>最后将云服务器中所有提及的端口打开</p>
+<h2 id="三、客户端配置"><a href="#三、客户端配置" class="headerlink" title="三、客户端配置"></a>三、客户端配置</h2><h3 id="1-编辑-frpc-toml"><a href="#1-编辑-frpc-toml" class="headerlink" title="1. 编辑 frpc.toml"></a>1. 编辑 <code>frpc.toml</code></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line"># 服务端公网ip、监听端口bind_port</span><br><span class="line">server_addr = x.x.x.x</span><br><span class="line">server_port = 7000</span><br><span class="line"># 服务端的授权码</span><br><span class="line">token = e10adc3949ba59abbe56e057f20f883e  </span><br><span class="line"># 去掉速度限制</span><br><span class="line">tcp_mux = false</span><br><span class="line"></span><br><span class="line">[ssh]</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 127.0.0.1</span><br><span class="line">local_port = 22</span><br><span class="line">remote_port = 2288</span><br><span class="line"></span><br><span class="line"># [ssh] 为服务名称，下方解释：访问frp服务端的2288端口时，等同于通过中转服务器访问127.0.0.1的22端口。</span><br><span class="line"># type 为连接的类型，此处为tcp</span><br><span class="line"># local_ip 为中转客户端实际访问的IP</span><br><span class="line"># local_port 为目标端口</span><br><span class="line"># remote_port 为远程端口，记得服务端的防火墙打开这个端口</span><br></pre></td></tr></table></figure>
+
+<p>需要其他端口映射则添加类似配置，如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop]</span><br><span class="line">type = tcp</span><br><span class="line">local_port = 50070</span><br><span class="line">remote_port = 50070</span><br></pre></td></tr></table></figure>
+<h3 id="2-客户端自启动配置"><a href="#2-客户端自启动配置" class="headerlink" title="2. 客户端自启动配置"></a>2. 客户端自启动配置</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/freshboya/article/details/86663907">centos6自启动配置</a></p>
+<h2 id="四、dashboard-web"><a href="#四、dashboard-web" class="headerlink" title="四、dashboard web"></a>四、dashboard web</h2><p><code>服务器端IP:7500</code></p>
+<h2 id="五、连接实验室服务器"><a href="#五、连接实验室服务器" class="headerlink" title="五、连接实验室服务器"></a>五、连接实验室服务器</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh username@服务器端ip -p 2288</span><br></pre></td></tr></table></figure>
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/breeze4u" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2024 breeze<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
