@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="一、环境准备Windows注意：配置过程中多处需要全局代理，请自行解决网络问题。
+1. 安装 Node.js 和 npm
+Hexo 是基于 Node.js 的，所以需要先安装 Node.js 和 npm。
+Windows 从 Node.js 官网下载安装包进行安装。安装完成后，将 Node.js 安"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="breeze"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="将 Hexo 部署在云服务器并使用 GitHub Pages 实现自动部署"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="一、环境准备Windows注意：配置过程中多处需要全局代理，请自行解决网络问题。
+1. 安装 Node.js 和 npm
+Hexo 是基于 Node.js 的，所以需要先安装 Node.js 和 npm。
+Windows 从 Node.js 官网下载安装包进行安装。安装完成后，将 Node.js 安"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Breeze&#39;s Blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="http://example.comimg/home.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="http://example.comimg/home.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>将 Hexo 部署在云服务器并使用 GitHub Pages 实现自动部署 - Breeze&#39;s Blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//cdn.bootcdn.net/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Breeze's Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/tags">
+                            
+                                Tags
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories">
+                            
+                                Categories
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/breeze4u">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>将 Hexo 部署在云服务器并使用 GitHub Pages 实现自动部署</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2024-08-28
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/Hexo/">#Hexo</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/教程/">教程</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h2><h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p><strong>注意：配置过程中多处需要全局代理，请自行解决网络问题。</strong></p>
+<h4 id="1-安装-Node-js-和-npm"><a href="#1-安装-Node-js-和-npm" class="headerlink" title="1. 安装 Node.js 和 npm"></a>1. 安装 Node.js 和 npm</h4><ul>
+<li>Hexo 是基于 Node.js 的，所以需要先安装 Node.js 和 npm。</li>
+<li>Windows 从 <a target="_blank" rel="noopener" href="https://nodejs.org/zh-cn">Node.js 官网</a>下载安装包进行安装。<br>安装完成后，将 Node.js 安装目录加入环境变量，在 <code>CMD</code> 通过以下命令检查是否安装成功：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+记录下 Node.js 的主版本，如 <code>v20.16.0</code> 的主版本为 20。</li>
+</ul>
+<h4 id="2-安装-Git"><a href="#2-安装-Git" class="headerlink" title="2. 安装 Git"></a>2. 安装 Git</h4><p>Windows 从 <a target="_blank" rel="noopener" href="https://git-scm.com/download/win">Git 官网</a> 下载安装包进行安装。<br>安装完成后，打开 <code>Git Bash</code> 配置一些基本信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;你的名字&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;你的邮箱&quot;</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-安装-Visual-Studio-Code"><a href="#3-安装-Visual-Studio-Code" class="headerlink" title="3. 安装 Visual Studio Code"></a>3. 安装 Visual Studio Code</h4><p>使用 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/Download">VS Code</a> 便于利用内置的 Git 插件实现编辑后即可上传至 GitHub 仓库的快速流程，也可使用具备相同功能的文本编辑器或 IDE 。</p>
+<h3 id="云服务器"><a href="#云服务器" class="headerlink" title="云服务器"></a>云服务器</h3><h4 id="1-安装-Git"><a href="#1-安装-Git" class="headerlink" title="1. 安装 Git"></a>1. 安装 Git</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git-core</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-安装-Node-js"><a href="#2-安装-Node-js" class="headerlink" title="2. 安装 Node.js"></a>2. 安装 Node.js</h4><p>通过 NodeSource 安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">更新包列表</span></span><br><span class="line">sudo apt update</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装最新 LTS 版本</span></span><br><span class="line">curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装最新稳定版本</span></span><br><span class="line">curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 20 版本（与 Windows 保持一致）</span></span><br><span class="line">curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 Node.js</span></span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+
+<p>验证安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-安装-Hexo"><a href="#3-安装-Hexo" class="headerlink" title="3. 安装 Hexo"></a>3. 安装 Hexo</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-创建-Hexouser-管理用户"><a href="#4-创建-Hexouser-管理用户" class="headerlink" title="4. 创建 Hexouser 管理用户"></a>4. 创建 Hexouser 管理用户</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> adduser hexouser</span><br><span class="line"></span><br><span class="line"><span class="comment"># 赋予 sudo 权限</span></span><br><span class="line"><span class="built_in">sudo</span> usermod -aG <span class="built_in">sudo</span> hexouser</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改密码</span></span><br><span class="line"><span class="built_in">sudo</span> passwd hexouser</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换用户</span></span><br><span class="line">su hexouser</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-生成密钥对"><a href="#5-生成密钥对" class="headerlink" title="5. 生成密钥对"></a>5. 生成密钥对</h4><ul>
+<li>如果你还没有 SSH 密钥对，可以在本地生成一个。运行以下命令：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C <span class="string">&quot;your_email@example.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这会生成一对密钥（公钥和私钥），通常会存放在 ~&#x2F;.ssh&#x2F; 目录下。</p>
+<ul>
+<li>添加公钥到你的服务器：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~/.ssh/id_rsa.pub &gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将私钥添加到 GitHub Secrets:</li>
+</ul>
+<p>打开私钥文件（通常是 <code>~/.ssh/id_rsa</code>），然后复制其内容。<br>将输出的内容（整个密钥，包括 <code>-----BEGIN RSA PRIVATE KEY-----</code> 和 <code>-----END RSA PRIVATE KEY-----</code>）复制到剪贴板。</p>
+<ul>
+<li>登录到你的 GitHub 账户，并导航到要使用的仓库。</li>
+<li>在仓库页面，点击右上角的 <strong>Settings</strong>。</li>
+<li>在左侧菜单中，点击 <strong>Secrets and variables</strong> -&gt; <strong>Actions</strong>。</li>
+<li>点击 <strong>New repository secret</strong> 按钮。</li>
+<li>在 <strong>Name</strong> 字段中输入 <code>SSH_PRIVATE_KEY</code>。</li>
+<li>在 <strong>Secret</strong> 字段中粘贴之前复制的私钥内容。</li>
+<li>点击 <strong>Add secret</strong> 保存。</li>
+</ul>
+<h4 id="6-域名配置"><a href="#6-域名配置" class="headerlink" title="6. 域名配置"></a>6. 域名配置</h4><p>由于本人使用的是阿里云香港服务器，无需备案，内地服务器请自行查阅资料。</p>
+<p>进入阿里云域名管理，绑定所属服务器即可。</p>
+<h2 id="二、Github-Pages-配置"><a href="#二、Github-Pages-配置" class="headerlink" title="二、Github Pages 配置"></a>二、Github Pages 配置</h2><p>进入创建仓库页面</p>
+<p><code>Repository name</code> 必须为<code>&lt;username&gt;.github.io</code></p>
+<p><img src="https://breeze-img.oss-cn-chengdu.aliyuncs.com/img/3346627dab800bfddeca088b6cf4fbc8-1723815699.png"><br><em>由于本人已完成创建所以显示已经存在</em></p>
+<p>在仓库中前往 <strong>Settings</strong> &gt; <strong>Pages</strong> &gt; <strong>Source</strong> 。 将 source 更改为 <strong>GitHub Actions</strong>，然后保存。</p>
+<p>创建完成后记录仓库地址。</p>
+<h2 id="三、Hexo-配置"><a href="#三、Hexo-配置" class="headerlink" title="三、Hexo 配置"></a>三、Hexo 配置</h2><h3 id="Windows-1"><a href="#Windows-1" class="headerlink" title="Windows"></a>Windows</h3><h4 id="1-安装-Hexo"><a href="#1-安装-Hexo" class="headerlink" title="1. 安装 Hexo"></a>1. 安装 Hexo</h4><p>在 <code>CMD</code> 中通过以下命令安装 Hexo：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+<p>安装完成后，通过以下命令检查是否安装成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -version</span><br></pre></td></tr></table></figure>
+<h4 id="2-本地创建博客"><a href="#2-本地创建博客" class="headerlink" title="2. 本地创建博客"></a>2. 本地创建博客</h4><p>在任意磁盘空间中创建一个名为 Blog 的目录，鼠标右键 <code>Git Bash Here</code> 打开 <code>Git Bash</code><br>输入以下命令进行初始化：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<p>成功后可以在 Blog 目录中看见生成了一堆目录和文件。<br>然后输入以下命令生成本地的 Hexo 页面：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>浏览器打开地址：<code>http://localhost:4000/</code><br>出现以下页面则表示创建成功：</p>
+<p><img src="https://breeze-img.oss-cn-chengdu.aliyuncs.com/img/1e8434d5555255b5797ff4e208ac2d30-1723881235.png"></p>
+<p><code>Ctrl + c</code> 关闭服务</p>
+<h4 id="3-上传到-GitHub-仓库"><a href="#3-上传到-GitHub-仓库" class="headerlink" title="3.  上传到 GitHub 仓库"></a>3.  上传到 GitHub 仓库</h4><p>使用 <code>VS Code</code> 打开 Blog 目录，创建 <code>.github/workflows/deploy.yml</code> 文件，并填入以下内容 (将 <code>20</code> 替换为前面步骤中记下的 Node.js 主版本)：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Deploy</span> <span class="string">Hexo</span> <span class="string">to</span> <span class="string">Server</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">main</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Node.js</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/setup-node@v1</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">node-version:</span> <span class="string">&#x27;20&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">dependencies</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Generate</span> <span class="string">static</span> <span class="string">files</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">npx</span> <span class="string">hexo</span> <span class="string">generate</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span> <span class="string">to</span> <span class="string">Server</span></span><br><span class="line">      <span class="attr">env:</span></span><br><span class="line">        <span class="attr">SSH_PRIVATE_KEY:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.SSH_PRIVATE_KEY</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        mkdir -p ~/.ssh</span></span><br><span class="line"><span class="string">        echo &quot;$SSH_PRIVATE_KEY&quot; &gt; ~/.ssh/id_rsa</span></span><br><span class="line"><span class="string">        chmod 600 ~/.ssh/id_rsa</span></span><br><span class="line"><span class="string">        ssh-keyscan breezev.cn &gt;&gt; ~/.ssh/known_hosts</span></span><br><span class="line"><span class="string">        rsync -avz --delete ./public/ hexouser@breezev.cn:/home/hexouser/blog/breeze4u.github.io/public</span></span><br></pre></td></tr></table></figure>
+<p>修改内容：</p>
+<ul>
+<li><code>node-version</code></li>
+<li><code>./public/hexouser@breezev.cn:/home/hexouser/blog/breeze4u.github.io/public</code></li>
+</ul>
+<p>在 Blog 目录下打开 Git Bash，输入以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin &lt;远程仓库URL&gt;</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;你的提交信息&quot;</span></span><br><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure>
+<p>如果本地仓库分支为 master 而远程仓库分支为 main ，则需要进行相应修改。</p>
+<p><strong>注意：默认情况下 <code>public/</code> 不会被上传(也不该被上传)，确保 <code>.gitignore</code> 文件中包含一行 <code>public/</code>。</strong></p>
+<p>部署完成后，前往 <code>&lt;username&gt;.github.io</code> 查看博客网页。</p>
+<h4 id="4-更换-Hexo-主题（可跳过）"><a href="#4-更换-Hexo-主题（可跳过）" class="headerlink" title="4. 更换 Hexo 主题（可跳过）"></a>4. 更换 Hexo 主题（可跳过）</h4><p>从 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">Hexo 主题</a> 中挑选喜欢的主题，本人选择的是 <a target="_blank" rel="noopener" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog</a>。<br>找一个空间输入以下命令克隆主题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/klugjo/hexo-theme-clean-blog.git themes/clean-blog</span><br></pre></td></tr></table></figure>
+<p>复制 themes 目录覆盖掉 Blog 目录下的 themes，然后删除其中 clean-blog 目录下的 <code>.git</code> 文件。</p>
+<p>编辑 Blog 根目录下的 <code>_config.yml</code> ，修改以下内容：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">clean-blog</span></span><br></pre></td></tr></table></figure>
+
+<p>关于主题的更多页面配置如标签与目录可以在 <a target="_blank" rel="noopener" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog</a> 中看到。</p>
+<p>然后将更改后的内容通过 Git 或 VS Code 内置 Git 上传至仓库。</p>
+<p>注意：出现访问较慢且布局混乱的情况，很有可能是 css 等资源在当前网络无法访问，打开 F12 查找哪些资源的 resource 需要修改，进入 Blog 目录进行全局修改。</p>
+<h4 id="5-发布文章"><a href="#5-发布文章" class="headerlink" title="5. 发布文章"></a>5. 发布文章</h4><p>使用 VS Code 打开 Blog 目录，在 <code>source/_posts</code> 下新建或将编辑好的 md 文件粘贴至此。<br>在页面中显示自定义信息，需要如下的文件头：</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: mytitle</span><br><span class="line">tags: </span><br><span class="line"><span class="bullet">  -</span> tag1</span><br><span class="line">date: 2024-08-16 21:26:53</span><br><span class="line">categories: </span><br><span class="line"><span class="section">  - cate1</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
+
+<p>编辑完成后保存上传至 Git 即可自动生成页面。</p>
+<h3 id="云服务器-1"><a href="#云服务器-1" class="headerlink" title="云服务器"></a>云服务器</h3><ol>
+<li>以 hexouser 用户创建 blog 目录：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> ~/blog</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>克隆 Hexo 仓库：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/&lt;username&gt;/&lt;username&gt;.github.io.git</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>初始化:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成 public 目录</span></span><br><span class="line">hexo -g</span><br></pre></td></tr></table></figure>
+
+<p>记录 public 路径：如<code>/home/hexouser/blog/breeze4u.github.io/public</code></p>
+<h2 id="四、Nginx-配置"><a href="#四、Nginx-配置" class="headerlink" title="四、Nginx 配置"></a>四、Nginx 配置</h2><ol>
+<li>编辑 Nginx 配置文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/nginx/sites-available/hexo</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    server_name breezev.cn;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root /home/hexouser/blog/breeze4u.github.io/public;</span><br><span class="line">        index index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # 错误页处理</span><br><span class="line">    error_page 404 /404.html;</span><br><span class="line">    location = /404.html &#123;</span><br><span class="line">        root /home/hexouser/blog/breeze4u.github.io/public;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改内容：</p>
+<ul>
+<li><code>server_name</code></li>
+<li><code>root</code></li>
+</ul>
+<ol start="2">
+<li>激活配置</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">ln</span> -s /etc/nginx/sites-available/hexo /etc/nginx/sites-enabled/</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>测试 Nginx 配置</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> nginx -t</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>设置 Nginx 权限</li>
+</ol>
+<p>将 <code>www-data</code> 用户添加到 <code>hexouser</code> 组：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> usermod -aG hexouser www-data</span><br></pre></td></tr></table></figure>
+
+<p>更改文件和目录的组权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> -R g+rwx /home/hexouser/blog/</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>重新启动 Nginx 服务</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart nginx</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、配置-Https"><a href="#五、配置-Https" class="headerlink" title="五、配置 Https"></a>五、配置 Https</h2><ol>
+<li>安装 Certbot</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install certbot python3-certbot-nginx</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>使用 Certbot 为你的域名生成 SSL 证书</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> certbot --nginx -d your_domain.com -d www.your_domain.com</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>自动更新证书</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> certbot renew --dry-run</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>配置 Nginx</li>
+</ol>
+<p>进入 Nginx 配置文件查看是否正确配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/nginx/sites-available/hexo</span><br></pre></td></tr></table></figure>
+
+<p>确保域名正确</p>
+<ol start="5">
+<li>重启 Nginx</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart nginx</span><br></pre></td></tr></table></figure>
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/breeze4u" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2024 breeze<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
